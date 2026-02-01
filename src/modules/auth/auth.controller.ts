@@ -1,0 +1,15 @@
+import { AuthResponseDto } from './dto/auth-response.dto';
+import { Body, Controller } from '@nestjs/common';
+import { AuthService } from './auth.service';
+import { RegisterDto } from './dto/register.dto';
+
+@Controller('auth')
+export class AuthController {
+    constructor(private readonly authService: AuthService) {}
+
+    //apis
+
+    async register(@Body() registerDto: RegisterDto): Promise<AuthResponseDto> {
+        return await this.authService.register(registerDto)
+    }
+}
