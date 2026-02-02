@@ -76,11 +76,13 @@ export class AuthService {
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const payload = { sub: userId, email };
     const refreshId = randomBytes(16).toString('hex');
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
         expiresIn: '15m',
         secret: this.configService.get<string>('JWT_SECRET'),
       }),
+
       this.jwtService.signAsync(
         { ...payload, refreshId },
         {
@@ -88,6 +90,7 @@ export class AuthService {
           secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
         },
       ),
+
     ]);
 
     return { accessToken, refreshToken };
@@ -98,14 +101,17 @@ export class AuthService {
     userId: string,
     refreshToken: string,
   ): Promise<void> {
+
     await this.prisma.user.update({
       where: { id: userId },
       data: { refreshToken },
     });
+
   }
 
   // Refresh access token
   async refreshTokens(userId: string): Promise<AuthResponseDto> {
+
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -128,18 +134,22 @@ export class AuthService {
       ...tokens,
       user,
     };
+
   }
 
   // Log out
   async logout(userId: string): Promise<void> {
+
     await this.prisma.user.update({
       where: { id: userId },
       data: { refreshToken: null },
     });
+
   }
 
   // Login
   async login(loginDto: LoginDto): Promise<AuthResponseDto> {
+    
     const { email, password } = loginDto;
 
     const user = await this.prisma.user.findUnique({
