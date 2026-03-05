@@ -8,6 +8,8 @@ import { UsersModule } from './modules/users/users.module';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductsModule } from './modules/products/products.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { PaymentsService } from './modules/payments/payments.service';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -18,9 +20,9 @@ import { OrdersModule } from './modules/orders/orders.module';
     PrismaModule, 
     AuthModule, 
     UsersModule, 
-    CategoryModule, ProductsModule, OrdersModule
+    CategoryModule, ProductsModule, OrdersModule, PaymentsModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PaymentsService],
 })
 export class AppModule {}
